@@ -7,6 +7,10 @@ const Inventory = styled.div`
   background-color: gray;
   padding: 1em;
   border-radius: 4px;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 const Equipped = styled.div`
@@ -20,6 +24,11 @@ const Item = styled.div`
   padding: 1em;
   margin: 1em;
   border-radius: 4px;
+`;
+
+const Layout = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `;
 
 const setIndex = (array, index, value) => {
@@ -90,46 +99,50 @@ const App = () => {
         setEquipped(newEquipped);
       }}
     >
-      <Droppable droppableId="inventory">
-        {(provided, snapshot) => (
-          <Inventory {...provided.droppableProps} ref={provided.innerRef}>
-            {inventory.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(provided, snapshot) => (
-                  <Item
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    {item.content}
-                  </Item>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </Inventory>
-        )}
-      </Droppable>
-      <Droppable droppableId="equipped">
-        {(provided, snapshot) => (
-          <Equipped {...provided.droppableProps} ref={provided.innerRef}>
-            {equipped.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(provided, snapshot) => (
-                  <Item
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    {item.content}
-                  </Item>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </Equipped>
-        )}
-      </Droppable>
+      <Layout>
+        <Droppable droppableId="equipped">
+          {(provided, snapshot) => (
+            <Equipped {...provided.droppableProps} ref={provided.innerRef}>
+              <h2>Equipped</h2>
+              {equipped.map((item, index) => (
+                <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {(provided, snapshot) => (
+                    <Item
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      {item.content}
+                    </Item>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </Equipped>
+          )}
+        </Droppable>
+        <Droppable droppableId="inventory">
+          {(provided, snapshot) => (
+            <Inventory {...provided.droppableProps} ref={provided.innerRef}>
+              <h2>Inventory</h2>
+              {inventory.map((item, index) => (
+                <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {(provided, snapshot) => (
+                    <Item
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      {item.content}
+                    </Item>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </Inventory>
+          )}
+        </Droppable>
+      </Layout>
     </DragDropContext>
   );
 };
